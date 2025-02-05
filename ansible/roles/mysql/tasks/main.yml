@@ -1,0 +1,25 @@
+- name: Instalar MySQL
+  apt:
+    name:
+      - mysql-server
+      - python3-mysqldb
+    state: present
+
+- name: Iniciar MySQL e ativar no boot
+  systemd:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: Criar banco de dados Laravel
+  mysql_db:
+    name: laravel
+    state: present
+
+- name: Criar usuário Laravel no MySQL
+  mysql_user:
+    name: laravel
+    password: "senha_segura"
+    priv: "laravel.*:ALL"
+    host: "%"
+    state: present

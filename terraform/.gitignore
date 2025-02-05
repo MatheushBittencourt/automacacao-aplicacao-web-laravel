@@ -1,0 +1,25 @@
+# Diretório de cache do Terraform
+.terraform/
+
+# Arquivo de estado do Terraform (contém informações sensíveis)
+terraform.tfstate
+terraform.tfstate.backup
+
+# Logs e travas do Terraform
+.crash.log
+.terraform.lock.hcl
+
+# Arquivo de variáveis com credenciais (se usado)
+terraform.tfvars
+terraform.tfvars.json
+
+# Arquivos de saída temporários
+*.tfplan
+*.backup
+
+# Arquivos de logs e IDEs
+*.log
+.DS_Store
+*.swp
+.idea/
+.vscode/

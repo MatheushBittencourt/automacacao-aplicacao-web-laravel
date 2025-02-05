@@ -1,0 +1,34 @@
+- name: Instalar Nginx
+  apt:
+    name: nginx
+    state: present
+
+- name: Criar diretório da aplicação Laravel
+  file:
+    path: /var/www/laravel
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copiar configuração do Nginx
+  template:
+    src: templates/laravel.conf.j2
+    dest: /etc/nginx/sites-available/laravel
+
+- name: Criar link simbólico para ativar Laravel no Nginx
+  file:
+    src: /etc/nginx/sites-available/laravel
+    dest: /etc/nginx/sites-enabled/laravel
+    state: link
+
+- name: Remover configuração padrão do Nginx
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
+- name: Reiniciar Nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes

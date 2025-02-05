@@ -1,0 +1,40 @@
+- name: Configurar Servidor Laravel
+  hosts: droplets
+  become: true
+  roles:
+    - nginx
+    - php
+    - mysql
+
+  tasks:
+    - name: Instalar pacotes essenciais
+      apt:
+        name:
+          - curl
+          - unzip
+          - git
+          - ufw
+        state: present
+        update_cache: yes
+
+    - name: Criar usuário 'deploy'
+      user:
+        name: deploy
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+
+    - name: Configurar firewall (UFW)
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop:
+        - "22"
+        - "80"
+        - "443"
+      notify: Reload UFW
+
+  handlers:
+    - name: Reload UFW
+      command: ufw reload
